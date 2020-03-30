@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    name: developer
+  name: spring-controller
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: developer
+    spec:
+      containers:
+        - image: steven8519/developer
+          imagePullPolicy: Always
+          name: developer
+          ports:
+            - name: developer
+              containerPort: 8080
+---
+# Node Port Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: developer
+  name: developer
+spec:
+  ports:
+    - name: http
+      port: 8080
+  selector:
+    app: developer
+    name: developer
+---
+# Mongo host path rc
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    name: mongodb
+  name: mongo-controller
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: mongodb
+    spec:
+      containers:
+        - image: mongodb
+          name: mongodb
+          ports:
+            - name: mongodb
+              containerPort: 27017
+              hostPort: 27017
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/db
+      volumes:
+        - name: mongo-persistent-storage
+          hostPath:
+            path: /tmp/dbbackup
+---
+# Mongo Node Port RC
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: mongodb
+  name: mongodb
+spec:
+  type: ClusterIP
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    name: mongodb
