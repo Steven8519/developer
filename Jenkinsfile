@@ -16,6 +16,7 @@ node {
         }
         sh 'docker push steven8519/developer'
     }
+
     stage("Deploy app"){
        kubernetesDeploy(
          configs: 'deployment.yaml',
