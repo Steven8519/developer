@@ -2,12 +2,10 @@ node {
     stage('SCM Checkout'){
         git credentialsId: 'GIT_CREDENTIALS', url:  'https://github.com/Steven8519/developer.git', branch: 'master'
     }
-
-    stage("Maven Package"){
+    stage("Maven Build"){
       sh "mvn clean install"
 
     }
-
     stage('Build Docker Image'){
         sh 'docker build -t steven8519/developer .'
     }
