@@ -3,7 +3,7 @@ node {
         git credentialsId: 'GIT_CREDENTIALS', url:  'https://github.com/Steven8519/developer.git', branch: 'master'
     }
     stage("Maven Build"){
-      sh " mvn clean install -P:developer"
+      sh " mvnw clean install -Pdeveloper"
 
     }
     stage('Build Docker Image'){
