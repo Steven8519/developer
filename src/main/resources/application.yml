@@ -1,10 +1,33 @@
 spring:
   profiles:
-    active: developer
+    active: dev
+---
+spring:
+  profiles: dev
   data:
     mongodb:
       port: 27017
-      database: mongo
+      database: developer
+
+server:
+  port: 8080
+---
+spring:
+  profiles: test
+  data:
+    mongodb:
+      port: 27017
+      database: test
+
+server:
+  port: 8080
+---
+spring:
+  profiles: prod
+  data:
+    mongodb:
+      port: 27017
+      host: mongo
 
 server:
   port: 8080
