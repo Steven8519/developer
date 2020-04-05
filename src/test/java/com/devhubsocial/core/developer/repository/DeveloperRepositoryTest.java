@@ -20,4 +20,29 @@ public class DeveloperRepositoryTest {
     @Autowired
     DeveloperRepository developerRepository;
 
+    List<Developer> developersList =
+            Arrays.asList(new Developer("1", "Mark", "Stevens", "Python Developer"));
+
+    @Before
+    public void setUp(){
+
+        developerRepository.deleteAll()
+                .thenMany(Flux.fromIterable(developersList))
+                .flatMap(developerRepository::save)
+                .doOnNext((developer-> {
+                    System.out.println("Inserted Developer is :" + developer);
+                }))
+                .blockLast();
+
+    }
+
+    @Test
+    public void get_all_developers_test() {
+        StepVerifier.create(developerRepository.findAll())
+            .expectSubscription()
+            .expectNextCount(1)
+            .expectComplete()
+            .verify();
+
+    }
 }

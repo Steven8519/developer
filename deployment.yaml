@@ -46,37 +46,46 @@ spec:
           ports:
             - containerPort: 8080
 ---
-apiVersion: apps/v1
-kind: Deployment
+# Mongo host path rc
+apiVersion: v1
+kind: ReplicationController
 metadata:
-  name: mongodb
   labels:
-    appdb: mongodb
+    name: mongo
+  name: mongo-controller
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      appdb: mongodb
   template:
     metadata:
       labels:
-        appdb: mongodb
+        name: mongo
     spec:
       containers:
-        - name: mongodb
-          image: mongo:3.6.6
+        - image: mongo
+          name: mongo
           ports:
-            - containerPort: 27017
+            - name: mongo
+              containerPort: 27017
+              hostPort: 27017
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/db
+      volumes:
+        - name: mongo-persistent-storage
+          hostPath:
+            path: /tmp/dbbackup
 ---
+# Mongo Node Port RC
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb
   labels:
-    app: mongodb
+    name: mongo
+  name: mongo
 spec:
+  type: ClusterIP
   ports:
     - port: 27017
-      protocol: TCP
+      targetPort: 27017
   selector:
-    appdb: mongodb
+    name: mongo

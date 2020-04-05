@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: dev
 ---
 spring:
   profiles: dev
@@ -27,7 +27,7 @@ spring:
   data:
     mongodb:
       port: 27017
-      host: mongodb
+      host: mongo
 
 server:
   port: 8080
