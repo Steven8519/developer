@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -15,13 +17,15 @@ import java.util.List;
 
 @DataMongoTest
 @RunWith(SpringRunner.class)
+@DirtiesContext
+@ActiveProfiles("dev")
 public class DeveloperRepositoryTest {
 
     @Autowired
     DeveloperRepository developerRepository;
 
     List<Developer> developersList =
-            Arrays.asList(new Developer("1", "Mark", "Stevens", "Python Developer"));
+            Arrays.asList(new Developer(null, "Mark", "Stevens", "Python Developer"));
 
     @Before
     public void setUp(){
@@ -37,12 +41,10 @@ public class DeveloperRepositoryTest {
     }
 
     @Test
-    public void get_all_developers_test() {
+    public void get_alldevelopers_test() {
         StepVerifier.create(developerRepository.findAll())
-            .expectSubscription()
-            .expectNextCount(1)
-            .expectComplete()
-            .verify();
-
+                .expectSubscription()
+                .expectNextCount(1)
+                .verifyComplete();
     }
 }
