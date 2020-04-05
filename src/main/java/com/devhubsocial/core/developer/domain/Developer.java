@@ -17,4 +17,6 @@ public class Developer {
     private String firstName;
     private String lastName;
     private String typeOfDeveloper;
+    private String username;
+    private String password;
 }

@@ -43,17 +43,15 @@ public class DeveloperController {
 
     @DeleteMapping("/{id}")
     public Mono<Void> deleteItem(@PathVariable String id){
-
         return developerRepository.deleteById(id);
-
     }
+
     @PutMapping("/{id}")
     public Mono<ResponseEntity<Developer>> updateItem(@PathVariable String id,
                                                  @RequestBody Developer developer){
 
         return developerRepository.findById(id)
                 .flatMap(updatedDeveloper -> {
-
                     updatedDeveloper.setFirstName(developer.getFirstName());
                     updatedDeveloper.setLastName(developer.getLastName());
                     updatedDeveloper.setLastName(developer.getTypeOfDeveloper());
