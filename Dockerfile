@@ -1,10 +1,5 @@
-FROM openjdk:12.0.2
-ENV APP_FILE developer-0.0.1-SNAPSHOT.jar
-ENV APP_HOME /usr/app
+FROM openjdk:8u131-jre
 
-EXPOSE 8080
+ADD maven/developer-0.0.1-SNAPSHOT.jar webapp.jar
 
-COPY target/*.jar $APP_HOME/
-WORKDIR $APP_HOME
-ENTRYPOINT ["sh", "-c"]
-CMD ["exec java -jar $APP_FILE"]
+CMD ["java", "-Xmx50m", "-jar","webapp.jar"]
