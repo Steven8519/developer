@@ -1,50 +1,25 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: developer
-  labels:
-    app: developer
-    service: developer
-spec:
-  ports:
-    - port: 8080
-      name: http
-  selector:
-    app: developer
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: devhub-developer
-  labels:
-    account: developer
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: developer-v1
-  labels:
-    app: developer
-    version: v1
+  name: devhubsocial
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: developer
-      version: v1
-  template:
+      app: devhubsocial
+  replicas: 1
+  template: # template for the pods
     metadata:
       labels:
-        app: developer
-        version: v1
+        app: devhubsocial
     spec:
-      serviceAccountName: devhub-developer
       containers:
-        - name: developer
-          image: steven8519/developer
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
+      - name: devhubsocial
+        image: steven8519/developer
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        command: ["java","-Xmx50m","-jar","webapp.jar"]
+        imagePullPolicy: Always
 ---
 # Mongo host path rc
 apiVersion: apps/v1
