@@ -11,8 +11,8 @@ node {
     }
 
     stage('Push Docker Image'){
-        withCredentials([string(credentialsId: 'Docker_Hub_ID', variable: 'Docker_Hub_ID')]) {
-          sh "docker login -u steven8519 -p ${Docker_Hub_ID}"
+        withCredentials([string(credentialsId: 'docker_hub', variable: 'docker_hub')]) {
+          sh "docker login -u steven8519 -p ${docker_hub}"
         }
         sh 'docker push steven8519/developer'
     }
