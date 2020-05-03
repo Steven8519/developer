@@ -18,10 +18,6 @@ node {
     }
 
     stage("Deploy app"){
-       kubernetesDeploy(
-         configs: 'deployment.yaml',
-         kubeconfigId: 'KUBERNATES_CONFIG',
-         enableConfigSubstitution: true
-        )
+        sh 'kubectl apply -f deployment.yaml'
     }
 }
