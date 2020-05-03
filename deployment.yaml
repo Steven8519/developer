@@ -42,7 +42,7 @@ spec:
       containers:
         - name: developer
           image: steven8519/developer
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
 ---
